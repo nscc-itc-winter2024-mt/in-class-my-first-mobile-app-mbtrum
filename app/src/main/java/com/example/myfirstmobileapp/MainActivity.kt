@@ -1,20 +1,40 @@
 package com.example.myfirstmobileapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.myfirstmobileapp.models.Message
-
 import com.example.myfirstmobileapp.ui.theme.MyFirstMobileAppTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +43,10 @@ class MainActivity : ComponentActivity() {
             MyFirstMobileAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+
+                    val mynum:Int = 6
+
+                    Log.i("ANDROID-TESTING","This is my first log message!")
 
                     // Create a list of messages
                     val messages = listOf(
@@ -36,16 +60,95 @@ class MainActivity : ComponentActivity() {
 
                     //Conversation(messages)
 
-                    // Use layout composables to arrange composables on the screen
-                    Column {
-                        Text("Alfred Sisley")
-                        Text("3 minutes ago")
 
-                        Row {
-                            Text("Alfred Sisley")
-                            Text("3 minutes ago")
+                    // Use layout composables to arrange composables on the screen
+//                    Column {
+//                        Text("Alfred Sisley")
+//                        Text("3 minutes ago")
+//
+//                        Row {
+//                            Text("Alfred Sisley")
+//                            Text("3 minutes ago")
+//                        }
+//                    }
+
+//                    Column {
+//                        Text("Hello World", color = Color.Blue)
+//                        Text("Hello World", fontSize = 30.sp)
+//
+//                        val offset = Offset(5.0f, 10.0f)
+//                        Text(text = "Hello world!",
+//                            style = TextStyle(fontSize = 24.sp,
+//                                color = Color.Black,
+//                                fontWeight = FontWeight.Bold,
+//                                shadow = Shadow(
+//                                    color = Color.Gray,
+//                                    offset = offset,
+//                                    blurRadius = 3f)
+//                            )
+//                        )
+//
+//                        Text("Hello World",
+//                            fontSize = 30.sp,
+//                            modifier = Modifier
+//                                .blur(3.dp, BlurredEdgeTreatment.Rectangle)
+//                                .padding(50.dp)
+//                        )
+//                    }
+
+//                    Column {
+
+//                        Image(painter =  painterResource(id = R.drawable.joe),
+//                            contentDescription = "Profile pic of Joe",
+//                            modifier = Modifier
+//                                // Set image size to 40 dp
+//                                .size(40.dp)
+//                                // Add some padding
+//                                .padding(5.dp)
+//                                // Clip image to be shaped as a circle
+//                                .clip(CircleShape)
+//                                // Set the border color from theme
+//                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+//
+//                        )
+//
+//                        Image(painter =  painterResource(id = R.drawable.sue),
+//                            contentDescription = "Profile pic of Sue",
+//                            modifier = Modifier
+//                                // Set image size to 40 dp
+//                                .size(40.dp)
+//                                // Add some padding
+//                                .padding(5.dp)
+//                                // Clip image to be shaped as a circle
+//                                .clip(CircleShape)
+//                                // Set the border color from theme
+//                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+//
+//                        )
+//
+//                    }
+
+                    Row {
+                        Image(painter =  painterResource(id = R.drawable.sue),
+                            contentDescription = "Profile pic of Sue",
+                            modifier = Modifier
+                                // Set image size to 40 dp
+                                .size(40.dp)
+                                // Clip image to be shaped as a circle
+                                .clip(CircleShape)
+                                // Set the border color from theme
+                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                        )
+
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        Column {
+                            Text("Sue")
+                            Text("Kotlin is my favorite programming language!")
                         }
                     }
+
+
                 }
             }
         }
