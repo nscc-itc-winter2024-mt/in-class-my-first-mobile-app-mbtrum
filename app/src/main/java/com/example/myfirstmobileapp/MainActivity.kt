@@ -6,11 +6,15 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,17 +22,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
@@ -36,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.myfirstmobileapp.models.Message
 import com.example.myfirstmobileapp.ui.theme.MyFirstMobileAppTheme
 
@@ -59,10 +69,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    ClickMe()
+                    //ClickMe()
 
                     // Display the conversation
-                    //Conversation(ConversationMessages.messages)
+                    Conversation(ConversationMessages.messages)
                 }
             }
         }
@@ -114,6 +124,9 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
 
+    // Delegated property for the Dialog - initialize to be hidden
+    var showDialog: Boolean by remember { mutableStateOf(false) }
+
     // Get the image ID for author
     val imgName = author.lowercase()
     val imgId = context.resources.getIdentifier(imgName, "drawable", context.packageName)
@@ -127,6 +140,11 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
                     .size(50.dp)
                     .clip(CircleShape)
                     .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                    .clickable {
+                        // Make the image clickable
+                        //Toast.makeText(context, "Hello $author", Toast.LENGTH_LONG ).show()
+                        showDialog = true
+                    }
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -139,6 +157,78 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
         }
     }
 
+    // Show the Dialog
+    if(showDialog) {
+        DisplayDialog(
+            onDismissRequest = { showDialog = false },
+            onConfirm = {
+                // Code block where we could do some action
+                showDialog = false
+                Log.i("DIALOGLEARNMORE", "Dialog Learn More selected")},
+            author,
+            imgId
+        )
+    }
+}
+
+@Composable
+fun DisplayDialog(
+    onDismissRequest: () -> Unit,
+    onConfirm: () -> Unit,
+    name: String,
+    imgId: Int
+) {
+
+    Dialog(onDismissRequest = { onDismissRequest() }){
+        // Show a card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(375.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = imgId),
+                    contentDescription = name,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(150.dp)
+                )
+
+                Text("Hi I'm $name! Click 'LearnMore' to see my profile.",
+                    modifier = Modifier.padding(16.dp))
+
+                //
+                // Display buttons to close the dialog
+                //
+
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    TextButton (
+                        onClick = { onDismissRequest() }
+                    ) {
+                        Text("Dismiss")
+                    }
+
+                    TextButton (
+                        onClick = { onDismissRequest() }
+                    ) {
+                        Text("Learn More")
+                    }
+                }
+
+            }
+        }
+
+    }
 }
 
 object ConversationMessages {
