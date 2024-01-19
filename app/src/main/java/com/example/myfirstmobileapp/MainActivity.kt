@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyFirstMobileAppTheme {
+            MyFirstMobileAppTheme(darkTheme = true) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -180,54 +180,56 @@ fun DisplayDialog(
 ) {
 
     Dialog(onDismissRequest = { onDismissRequest() }){
+//        Card(){
+//            Column(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//            ) {
+//                Text("hello")
+//            }
+//        }
+
         // Show a card
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(375.dp)
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(16.dp),
+                //verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
+
             ) {
                 Image(
                     painter = painterResource(id = imgId),
                     contentDescription = name,
-                    contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .height(150.dp)
+                        .size(150.dp)
+                        .clip(CircleShape)
+                        .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 )
 
-                Text("Hi I'm $name! Click 'LearnMore' to see my profile.",
-                    modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                //
-                // Display buttons to close the dialog
-                //
+                Text("I'm $name! Click 'Learn More' to see my profile.")
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Display 2 buttons to close the dialog
 
                 Row(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    TextButton (
-                        onClick = { onDismissRequest() }
-                    ) {
+                    TextButton (onClick = { onDismissRequest() }) {
                         Text("Dismiss")
                     }
 
-                    TextButton (
-                        onClick = { onDismissRequest() }
-                    ) {
+                    TextButton (onClick = { onConfirm() }) {
                         Text("Learn More")
                     }
                 }
-
             }
         }
-
     }
 }
 
