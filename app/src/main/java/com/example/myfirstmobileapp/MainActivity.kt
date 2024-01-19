@@ -144,7 +144,7 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
                         // Show a Toast
                         //Toast.makeText(context, "Hello $author", Toast.LENGTH_LONG ).show()
 
-                        // Show a dialog
+                        // Display the dialog
                         showDialog = true
                     }
             )
@@ -189,7 +189,6 @@ fun DisplayDialog(
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                //verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
 
             ) {
@@ -209,7 +208,6 @@ fun DisplayDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Display 2 buttons to close the dialog
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
