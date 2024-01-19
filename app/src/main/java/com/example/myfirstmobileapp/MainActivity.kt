@@ -2,6 +2,7 @@ package com.example.myfirstmobileapp
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -14,11 +15,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
@@ -26,6 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,113 +54,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyFirstMobileAppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
 
-                    val mynum:Int = 6
+                    ClickMe()
 
-                    Log.i("ANDROID-TESTING","This is my first log message!")
-
-                    // Create a list of messages
-                    val messages = listOf(
-                        Message("Mike","Data classes in Kotlin are primarily used to hold data." ),
-                        Message("Mike","For each data class, the compiler automatically generates additional member functions that allow you to print an instance to readable output, compare instances, copy instances, and more. Data classes are marked with data."),
-                        Message("Mike","The compiler automatically derives the following members from all properties declared in the primary constructor"),
-                        Message("Mike","If there are explicit implementations of .equals(), .hashCode(), or .toString() in the data class body or final implementations in a superclass, then these functions are not generated, and the existing implementations are used."),
-                        Message("Mike","data class User(val name: String = \"\", val age: Int = 0)"),
-                        Message("Mike","On the JVM, if the generated class needs to have a parameterless constructor, default values for the properties have to be specified (see Constructors).")
-                        )
-
-                    //Conversation(messages)
-
-
-                    // Use layout composables to arrange composables on the screen
-//                    Column {
-//                        Text("Alfred Sisley")
-//                        Text("3 minutes ago")
-//
-//                        Row {
-//                            Text("Alfred Sisley")
-//                            Text("3 minutes ago")
-//                        }
-//                    }
-
-//                    Column {
-//                        Text("Hello World", color = Color.Blue)
-//                        Text("Hello World", fontSize = 30.sp)
-//
-//                        val offset = Offset(5.0f, 10.0f)
-//                        Text(text = "Hello world!",
-//                            style = TextStyle(fontSize = 24.sp,
-//                                color = Color.Black,
-//                                fontWeight = FontWeight.Bold,
-//                                shadow = Shadow(
-//                                    color = Color.Gray,
-//                                    offset = offset,
-//                                    blurRadius = 3f)
-//                            )
-//                        )
-//
-//                        Text("Hello World",
-//                            fontSize = 30.sp,
-//                            modifier = Modifier
-//                                .blur(3.dp, BlurredEdgeTreatment.Rectangle)
-//                                .padding(50.dp)
-//                        )
-//                    }
-
-//                    Column {
-
-//                        Image(painter =  painterResource(id = R.drawable.joe),
-//                            contentDescription = "Profile pic of Joe",
-//                            modifier = Modifier
-//                                // Set image size to 40 dp
-//                                .size(40.dp)
-//                                // Add some padding
-//                                .padding(5.dp)
-//                                // Clip image to be shaped as a circle
-//                                .clip(CircleShape)
-//                                // Set the border color from theme
-//                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-//
-//                        )
-//
-//                        Image(painter =  painterResource(id = R.drawable.sue),
-//                            contentDescription = "Profile pic of Sue",
-//                            modifier = Modifier
-//                                // Set image size to 40 dp
-//                                .size(40.dp)
-//                                // Add some padding
-//                                .padding(5.dp)
-//                                // Clip image to be shaped as a circle
-//                                .clip(CircleShape)
-//                                // Set the border color from theme
-//                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-//
-//                        )
-//
-//                    }
-
-                    Row {
-                        Image(painter =  painterResource(id = R.drawable.sue),
-                            contentDescription = "Profile pic of Sue",
-                            modifier = Modifier
-                                // Set image size to 40 dp
-                                .size(40.dp)
-                                // Clip image to be shaped as a circle
-                                .clip(CircleShape)
-                                // Set the border color from theme
-                                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                        )
-
-                        Spacer(modifier = Modifier.width(5.dp))
-
-                        Column {
-                            Text("Sue")
-                            Text("Kotlin is my favorite programming language!")
-                        }
-                    }
-
-
+                    // Display the conversation
+                    //Conversation(ConversationMessages.messages)
                 }
             }
         }
@@ -156,22 +70,100 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun ClickMe() {
+    val context = LocalContext.current
+
+    var name: String by remember { mutableStateOf("") }
+
+    Column (modifier = Modifier.padding(10.dp)) {
+
+        TextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("What is your name?") }
+        )
+
+        Spacer(modifier = Modifier.height(3.dp))
+
+        Button(
+           onClick = {
+               // Show a temporary pop up message
+               val toast = Toast.makeText(context, "Hello $name!", Toast.LENGTH_LONG )
+               toast.show()
+           }
+        ){
+            // Button label
+            Text("Click Me")
+        }
+
+    }
+}
+
+@Composable
 fun Conversation(messages: List<Message>) {
-    for (message in messages) {
-        MessageCard(message.author, message.body)
+    LazyColumn {
+        items(messages) {post ->
+            MessageCard(post.author, post.body)
+        }
     }
 }
 
 // My Greeting function.
 @Composable
 fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
-    Text(
-        text = author,
-        modifier = modifier
-    )
-    Text(
-        text = body,
-        modifier = modifier
+
+    val context = LocalContext.current
+
+    // Get the image ID for author
+    val imgName = author.lowercase()
+    val imgId = context.resources.getIdentifier(imgName, "drawable", context.packageName)
+
+    Card(modifier = Modifier.padding(8.dp)) {
+        Row (modifier = Modifier.padding(8.dp)){
+            Image(
+                painter = painterResource(id = imgId),
+                contentDescription = author,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column {
+                Text(text = author, fontWeight = FontWeight.Bold)
+
+                Text(text = body, color = MaterialTheme.colorScheme.secondary)
+            }
+        }
+    }
+
+}
+
+object ConversationMessages {
+    val messages = listOf(
+        Message("Mike", "Data classes in Kotlin are primarily used to hold data."),
+        Message(
+            "Jane",
+            "For each data class, the compiler automatically generates additional member functions that allow you to print an instance to readable output, compare instances, copy instances, and more. Data classes are marked with data."
+        ),
+        Message(
+            "Jane",
+            "The compiler automatically derives the following members from all properties declared in the primary constructor"
+        ),
+        Message(
+            "Mike",
+            "If there are explicit implementations of .equals(), .hashCode(), or .toString() in the data class body or final implementations in a superclass, then these functions are not generated, and the existing implementations are used."
+        ),
+        Message(
+            "Jane",
+            "data class User(val name: String = \"\", val age: Int = 0)"
+        ),
+        Message(
+            "Mike",
+            "On the JVM, if the generated class needs to have a parameterless constructor, default values for the properties have to be specified (see Constructors)."
+        )
     )
 }
 
