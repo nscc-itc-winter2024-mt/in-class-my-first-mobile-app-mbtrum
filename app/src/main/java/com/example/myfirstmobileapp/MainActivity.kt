@@ -141,8 +141,10 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
                     .clip(CircleShape)
                     .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
                     .clickable {
-                        // Make the image clickable
+                        // Show a Toast
                         //Toast.makeText(context, "Hello $author", Toast.LENGTH_LONG ).show()
+
+                        // Show a dialog
                         showDialog = true
                     }
             )
@@ -164,7 +166,7 @@ fun MessageCard(author: String, body: String, modifier: Modifier = Modifier) {
             onConfirm = {
                 // Code block where we could do some action
                 showDialog = false
-                Log.i("DIALOGLEARNMORE", "Dialog Learn More selected")},
+                Log.i("DIALOG-LEARN-MORE", "Dialog Learn More clicked")},
             author,
             imgId
         )
@@ -180,14 +182,6 @@ fun DisplayDialog(
 ) {
 
     Dialog(onDismissRequest = { onDismissRequest() }){
-//        Card(){
-//            Column(
-//                modifier = Modifier
-//                    .padding(16.dp)
-//            ) {
-//                Text("hello")
-//            }
-//        }
 
         // Show a card
         Card(
